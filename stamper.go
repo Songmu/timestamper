@@ -54,7 +54,7 @@ const defaultLayout = "2006-01-02T15:04:05.000000Z07:00 " // RFC3339Micro
 func (s *stamper) Transform(dst, src []byte, atEOF bool) (nDst, nSrc int, err error) {
 	var buf bytes.Buffer
 	var nDstTemp int
-	for i, chr := range src {
+	for _, chr := range src {
 		if !s.midOfLine {
 			buf.Write(s.timestampBytes())
 			nDstTemp += s.stampLen()
@@ -63,7 +63,7 @@ func (s *stamper) Transform(dst, src []byte, atEOF bool) (nDst, nSrc int, err er
 		if chr == '\n' {
 			s.midOfLine = false
 		}
-		buf.Write(src[i : i+1])
+		buf.WriteByte(chr)
 		nDstTemp++
 		nSrc++
 	}
