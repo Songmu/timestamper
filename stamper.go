@@ -7,9 +7,30 @@ import (
 	"golang.org/x/text/transform"
 )
 
+// Option type of timestamper
+type Option func(*stamper)
+
+// UTC for using utc in timestamp
+func UTC() Option {
+	return func(s *stamper) {
+		s.utc = true
+	}
+}
+
+// Layout for specifying custom timestamp layout
+func Layout(layout string) Option {
+	return func(s *stamper) {
+		s.layout = layout
+	}
+}
+
 // New returns new timestamper
-func New() transform.Transformer {
-	return &stamper{layout: defaultLayout}
+func New(opts ...Option) transform.Transformer {
+	s := &stamper{layout: defaultLayout}
+	for _, opt := range opts {
+		opt(s)
+	}
+	return s
 }
 
 type stamper struct {
