@@ -11,7 +11,7 @@ timestamper
 [license]: https://github.com/Songmu/timestamper/blob/master/LICENSE
 [godoc]: https://godoc.org/github.com/Songmu/timestamper
 
-text transformer to put timestamps. Is is very useful for logging.
+text transformer to put timestamps. It is very useful for logging.
 
 ## Description
 
@@ -23,7 +23,7 @@ The text transformer to put timestamps. The timestamper implements
 ### Easy Usage
 
 ```Go
-s := timestamper.New()
+var s transform.Transformer = timestamper.New()
 var w io.WriteCloser = transform.NewWriter(os.Stdout, s)
 fmt.Fprint(w, "Hello\nWorld!")
 // Output:
