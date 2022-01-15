@@ -80,6 +80,9 @@ func (s *stamper) Transform(dst, src []byte, atEOF bool) (nDst, nSrc int, err er
 		}
 	}
 	nDst = copy(dst, buf.Bytes())
+	if atEOF {
+		s.Reset()
+	}
 	return
 }
 
