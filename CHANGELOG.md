@@ -1,5 +1,9 @@
 # Changelog
 
+## [v0.1.0](https://github.com/Songmu/timestamper/compare/v0.0.3...v0.1.0) (2022-01-15)
+
+* lock in Reset, just in case [#5](https://github.com/Songmu/timestamper/pull/5) ([Songmu](https://github.com/Songmu))
+
 ## [v0.0.3](https://github.com/Songmu/timestamper/compare/v0.0.2...v0.0.3) (2022-01-15)
 
 * add test for long line [#4](https://github.com/Songmu/timestamper/pull/4) ([Songmu](https://github.com/Songmu))
