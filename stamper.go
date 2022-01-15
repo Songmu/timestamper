@@ -64,11 +64,7 @@ func (s *stamper) Transform(dst, src []byte, atEOF bool) (nDst, nSrc int, err er
 				err = transform.ErrShortDst
 				break
 			}
-			n, e := buf.Write(ts)
-			if e != nil {
-				err = e
-				return
-			}
+			n, _ := buf.Write(ts)
 			nDstTemp += n
 			s.midOfLine = true
 		}
