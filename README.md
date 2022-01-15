@@ -41,6 +41,16 @@ s2 := timestamper.New(timestamper.Layout("06-01-02 15:04:05 ")) // specify custo
 ## Installation
 
     % go get github.com/Songmu/timestamper
+    % go install github.com/Songmu/timestamper/cmd/timestamp
+
+## Usage
+
+How to use the included command line tool called timestamp.
+
+```console
+% tail -f path/to/log | timestamp
+...log with timestamp here...
+```
 
 ## Author
 
