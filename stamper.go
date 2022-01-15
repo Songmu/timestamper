@@ -39,10 +39,6 @@ type stamper struct {
 	utc       bool
 }
 
-func (s *stamper) stampLen() int {
-	return len(s.layout)
-}
-
 // Reset implements transform.Transformer.Reset.
 func (s *stamper) Reset() {
 	s.midOfLine = false
@@ -59,6 +55,7 @@ func (s *stamper) Transform(dst, src []byte, atEOF bool) (nDst, nSrc int, err er
 		if !s.midOfLine {
 			ts := s.timestampBytes()
 			if nDstTemp+len(ts) > dstLen {
+				err = transform.ErrShortDst
 				break
 			}
 			n, e := buf.Write(ts)
@@ -76,13 +73,11 @@ func (s *stamper) Transform(dst, src []byte, atEOF bool) (nDst, nSrc int, err er
 		nDstTemp++
 		nSrc++
 		if nDstTemp >= dstLen {
+			err = transform.ErrShortDst
 			break
 		}
 	}
 	nDst = copy(dst, buf.Bytes())
-	if nDst < nDstTemp {
-		err = transform.ErrShortDst
-	}
 	return
 }
 
@@ -96,7 +91,7 @@ func (s *stamper) timestampBytes() []byte {
 
 func (s *stamper) formatTimestamp(t time.Time) []byte {
 	const defaultMax = 64
-	max := s.stampLen() + 10
+	max := len(s.layout) + 10
 	if max < defaultMax {
 		max = defaultMax
 	}
