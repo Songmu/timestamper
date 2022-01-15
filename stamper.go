@@ -2,6 +2,7 @@ package timestamper
 
 import (
 	"bytes"
+	"sync"
 	"time"
 
 	"golang.org/x/text/transform"
@@ -37,6 +38,8 @@ type stamper struct {
 	layout    string
 	midOfLine bool
 	utc       bool
+
+	mu sync.Mutex
 }
 
 // Reset implements transform.Transformer.Reset.
@@ -48,6 +51,9 @@ const defaultLayout = "2006-01-02T15:04:05.000000Z07:00 " // RFC3339Micro
 
 // Transform implements transform.Transformer.Transform.
 func (s *stamper) Transform(dst, src []byte, atEOF bool) (nDst, nSrc int, err error) {
+	s.mu.Lock()
+	defer s.mu.Unlock()
+
 	var buf bytes.Buffer
 	var dstLen = len(dst)
 	var nDstTemp int
