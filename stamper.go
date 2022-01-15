@@ -97,6 +97,6 @@ func (s *stamper) formatTimestamp(t time.Time) []byte {
 	if max < defaultMax {
 		max = defaultMax
 	}
-	b := make([]byte, 0, defaultMax)
+	b := make([]byte, 0, max)
 	return t.AppendFormat(b, s.layout)
 }
