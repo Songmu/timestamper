@@ -1,14 +1,14 @@
 timestamper
 =======
 
-[![Build Status](https://travis-ci.org/Songmu/timestamper.png?branch=master)][travis]
-[![Coverage Status](https://coveralls.io/repos/Songmu/timestamper/badge.png?branch=master)][coveralls]
+[![Build Status](https://travis-ci.org/Songmu/timestamper.png?branch=main)][travis]
+[![Coverage Status](https://coveralls.io/repos/Songmu/timestamper/badge.png?branch=main)][coveralls]
 [![MIT License](http://img.shields.io/badge/license-MIT-blue.svg?style=flat-square)][license]
 [![GoDoc](https://godoc.org/github.com/Songmu/timestamper?status.svg)][godoc]
 
 [travis]: https://travis-ci.org/Songmu/timestamper
-[coveralls]: https://coveralls.io/r/Songmu/timestamper?branch=master
-[license]: https://github.com/Songmu/timestamper/blob/master/LICENSE
+[coveralls]: https://coveralls.io/r/Songmu/timestamper?branch=main
+[license]: https://github.com/Songmu/timestamper/blob/main/LICENSE
 [godoc]: https://godoc.org/github.com/Songmu/timestamper
 
 text transformer to put timestamps. It is very useful for logging.
