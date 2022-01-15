@@ -53,11 +53,20 @@ const defaultLayout = "2006-01-02T15:04:05.000000Z07:00 " // RFC3339Micro
 // Transform implements transform.Transformer.Transform.
 func (s *stamper) Transform(dst, src []byte, atEOF bool) (nDst, nSrc int, err error) {
 	var buf bytes.Buffer
+	var dstLen = len(dst)
 	var nDstTemp int
 	for _, chr := range src {
 		if !s.midOfLine {
-			buf.Write(s.timestampBytes())
-			nDstTemp += s.stampLen()
+			ts := s.timestampBytes()
+			if nDstTemp+len(ts) > dstLen {
+				break
+			}
+			n, e := buf.Write(ts)
+			if e != nil {
+				err = e
+				return
+			}
+			nDstTemp += n
 			s.midOfLine = true
 		}
 		if chr == '\n' {
@@ -66,6 +75,9 @@ func (s *stamper) Transform(dst, src []byte, atEOF bool) (nDst, nSrc int, err er
 		buf.WriteByte(chr)
 		nDstTemp++
 		nSrc++
+		if nDstTemp >= dstLen {
+			break
+		}
 	}
 	nDst = copy(dst, buf.Bytes())
 	if nDst < nDstTemp {
@@ -83,6 +95,11 @@ func (s *stamper) timestampBytes() []byte {
 }
 
 func (s *stamper) formatTimestamp(t time.Time) []byte {
-	b := make([]byte, 0, s.stampLen())
+	const defaultMax = 64
+	max := s.stampLen() + 10
+	if max < defaultMax {
+		max = defaultMax
+	}
+	b := make([]byte, 0, defaultMax)
 	return t.AppendFormat(b, s.layout)
 }
