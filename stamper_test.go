@@ -53,6 +53,18 @@ World!`,
 				timeRegStr + `World!\z`)
 		}(),
 		options: []timestamper.Option{timestamper.Layout("06-01-02 15:04:05 ")},
+	}, {
+		name:  "long",
+		input: strings.Repeat("s", 4100) + "\n" + strings.Repeat("S", 4100) + "\nHello!",
+		reg: func() *regexp.Regexp {
+			timeRegStr := `[0-9]{4}-[0-9]{2}-[0-9]{2}T` +
+				`[0-9]{2}:[0-9]{2}:[0-9]{2}\.[0-9]{6}` +
+				`(?:Z|[-+][0-9]{2}:[0-9]{2}) `
+			return regexp.MustCompile(`\A` +
+				timeRegStr + "s{1000}s{1000}s{1000}s{1000}s{100}\n" +
+				timeRegStr + "S{1000}S{1000}S{1000}S{1000}S{100}\n" +
+				timeRegStr + `Hello!\z`)
+		}(),
 	}}
 
 	for _, tc := range testCases {
