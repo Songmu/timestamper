@@ -44,6 +44,13 @@ type stamper struct {
 
 // Reset implements transform.Transformer.Reset.
 func (s *stamper) Reset() {
+	s.mu.Lock()
+	defer s.mu.Unlock()
+
+	s.reset()
+}
+
+func (s *stamper) reset() {
 	s.midOfLine = false
 }
 
@@ -81,7 +88,7 @@ func (s *stamper) Transform(dst, src []byte, atEOF bool) (nDst, nSrc int, err er
 	}
 	nDst = copy(dst, buf.Bytes())
 	if atEOF {
-		s.Reset()
+		s.reset()
 	}
 	return
 }
