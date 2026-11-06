@@ -1,5 +1,6 @@
 VERSION ?= $(shell git describe --tags --always)
-BUILD_LDFLAGS = "-s -w"
+REVISION = $(shell git rev-parse --short HEAD)
+BUILD_LDFLAGS = "-s -w -X main.version=$(VERSION) -X main.revision=$(REVISION)"
 u := $(if $(update),-u)
 
 .PHONY: deps
