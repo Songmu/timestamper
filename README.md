@@ -52,6 +52,8 @@ How to use the included command line tool called timestamp.
 ...log with timestamp here...
 ```
 
+Use `timestamp -version` to show the version and revision.
+
 ## Author
 
 [Songmu](https://github.com/Songmu)
