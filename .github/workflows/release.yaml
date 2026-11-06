@@ -19,7 +19,6 @@ jobs:
     - name: checkout
       uses: actions/checkout@v7.0.1
       with:
-        fetch-depth: 0
         persist-credentials: false
     - name: setup go
       uses: actions/setup-go@v7.0.0
@@ -28,4 +27,5 @@ jobs:
     - name: release
       env:
         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        VERSION: ${{ github.ref_name }}
       run: make crossbuild upload
