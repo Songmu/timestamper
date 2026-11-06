@@ -33,8 +33,10 @@ fmt.Fprint(w, "Hello\nWorld!")
 
 `NewWriter` serializes concurrent `Write` and `Close` calls, including writes to
 the underlying writer. Use one shared writer for a shared output stream.
-`New` remains available for `transform.NewReader` and `transform.NewWriter`,
-but sharing a `transform.Writer` requires external synchronization.
+`New` remains available for `transform.NewReader` and `transform.NewWriter`.
+Use a separate `New(...)` instance for each reader or writer, since transformers
+retain per-stream line state. Sharing a `transform.Writer` also requires external
+synchronization.
 
 ### Functional Option
 
