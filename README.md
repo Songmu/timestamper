@@ -23,13 +23,20 @@ The text transformer to put timestamps. The timestamper implements
 ### Easy Usage
 
 ```Go
-var s transform.Transformer = timestamper.New()
-var w io.WriteCloser = transform.NewWriter(os.Stdout, s)
+var w io.WriteCloser = timestamper.NewWriter(os.Stdout)
+defer w.Close()
 fmt.Fprint(w, "Hello\nWorld!")
 // Output:
 // 2019-02-11T01:14:54.093021+09:00 Hello
 // 2019-02-11T01:14:54.093151+09:00 World!
 ```
+
+`NewWriter` serializes concurrent `Write` and `Close` calls, including writes to
+the underlying writer. Use one shared writer for a shared output stream.
+`New` remains available for `transform.NewReader` and `transform.NewWriter`.
+Use a separate `New(...)` instance for each reader or writer, since transformers
+retain per-stream line state. Sharing a `transform.Writer` also requires external
+synchronization.
 
 ### Functional Option
 

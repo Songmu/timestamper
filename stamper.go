@@ -2,6 +2,7 @@ package timestamper
 
 import (
 	"bytes"
+	"io"
 	"sync"
 	"time"
 
@@ -34,6 +35,29 @@ func New(opts ...Option) transform.Transformer {
 	return s
 }
 
+// NewWriter returns a timestamping writer safe for concurrent Write and Close calls.
+// Close flushes the transformer without closing w.
+func NewWriter(w io.Writer, opts ...Option) io.WriteCloser {
+	return &writer{w: transform.NewWriter(w, New(opts...))}
+}
+
+type writer struct {
+	mu sync.Mutex
+	w  *transform.Writer
+}
+
+func (w *writer) Write(p []byte) (int, error) {
+	w.mu.Lock()
+	defer w.mu.Unlock()
+	return w.w.Write(p)
+}
+
+func (w *writer) Close() error {
+	w.mu.Lock()
+	defer w.mu.Unlock()
+	return w.w.Close()
+}
+
 type stamper struct {
 	layout    string
 	midOfLine bool
@@ -62,32 +86,25 @@ func (s *stamper) Transform(dst, src []byte, atEOF bool) (nDst, nSrc int, err er
 	defer s.mu.Unlock()
 
 	var buf bytes.Buffer
-	var dstLen = len(dst)
-	var nDstTemp int
 	for _, chr := range src {
-		if !s.midOfLine {
-			ts := s.timestampBytes()
-			if nDstTemp+len(ts) > dstLen {
-				err = transform.ErrShortDst
-				break
-			}
-			n, _ := buf.Write(ts)
-			nDstTemp += n
-			s.midOfLine = true
-		}
-		if chr == '\n' {
-			s.midOfLine = false
-		}
-		buf.WriteByte(chr)
-		nDstTemp++
-		nSrc++
-		if nDstTemp >= dstLen {
+		if buf.Len() == len(dst) {
 			err = transform.ErrShortDst
 			break
 		}
+		if !s.midOfLine {
+			ts := s.timestampBytes()
+			if len(dst)-buf.Len() < len(ts)+1 {
+				err = transform.ErrShortDst
+				break
+			}
+			buf.Write(ts)
+		}
+		buf.WriteByte(chr)
+		nSrc++
+		s.midOfLine = chr != '\n'
 	}
 	nDst = copy(dst, buf.Bytes())
-	if atEOF {
+	if atEOF && err == nil {
 		s.reset()
 	}
 	return
