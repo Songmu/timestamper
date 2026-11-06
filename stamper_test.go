@@ -2,7 +2,7 @@ package timestamper_test
 
 import (
 	"bytes"
-	"io/ioutil"
+	"io"
 	"regexp"
 	"strings"
 	"testing"
@@ -75,7 +75,7 @@ World!`,
 
 			t.Run("Reader", func(t *testing.T) {
 				r := transform.NewReader(strings.NewReader(input), s)
-				b, err := ioutil.ReadAll(r)
+				b, err := io.ReadAll(r)
 				if err != nil {
 					t.Errorf("something went wrong: %s", err)
 				}

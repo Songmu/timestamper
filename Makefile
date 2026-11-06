@@ -1,26 +1,26 @@
 VERSION = $(shell godzil show-version)
 CURRENT_REVISION = $(shell git rev-parse --short HEAD)
-BUILD_LDFLAGS = "-s -w -X github.com/Songmu/timestamp.revision=$(CURRENT_REVISION)"
+BUILD_LDFLAGS = "-s -w -X github.com/Songmu/timestamper.revision=$(CURRENT_REVISION)"
 u := $(if $(update),-u)
 
 .PHONY: deps
 deps:
-	go get ${u} -d
+	go get ${u}
 	go mod tidy
 
 .PHONY: devel-deps
 devel-deps:
-	go install golang.org/x/lint/golint@latest
-	go install github.com/tcnksm/ghr@latest
-	go install github.com/Songmu/godzil/cmd/godzil@latest
+	go install honnef.co/go/tools/cmd/staticcheck@v0.8.2
+	go install github.com/tcnksm/ghr@v0.18.6
+	go install github.com/Songmu/godzil/cmd/godzil@v0.23.2
 
 .PHONY: test
 test:
-	go test
+	go test ./...
 
 .PHONY: lint
 lint: devel-deps
-	golint -set_exit_status
+	staticcheck ./...
 
 .PHONY: build
 build: deps
