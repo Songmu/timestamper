@@ -1,5 +1,11 @@
 # Changelog
 
+## [v0.1.1](https://github.com/Songmu/timestamper/compare/v0.1.0...v0.1.1) - 2026-11-06
+
+- Modernize Go dependencies and workflows following Songmu/errors by @Songmu in https://github.com/Songmu/timestamper/pull/6
+- Automate releases with tagpr by @Songmu in https://github.com/Songmu/timestamper/pull/8
+- Prevent timestamp output corruption at buffer boundaries and during concurrent writes by @Songmu in https://github.com/Songmu/timestamper/pull/7
+
 ## [v0.1.0](https://github.com/Songmu/timestamper/compare/v0.0.3...v0.1.0) (2022-01-15)
 
 * lock in Reset, just in case [#5](https://github.com/Songmu/timestamper/pull/5) ([Songmu](https://github.com/Songmu))
