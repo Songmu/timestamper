@@ -10,7 +10,7 @@ workflows:
     '.github/workflows/reviewdog.yaml':
         - 'actions/checkout@v7.0.1'
         - 'actions/setup-go@v7.0.0'
-        - 'reviewdog/action-actionlint@v1.81.1'
+        - 'reviewdog/action-actionlint@v1.84.0'
         - 'reviewdog/action-misspell@v1.30.4'
         - 'reviewdog/action-staticcheck@v1.33.0'
     '.github/workflows/test.yaml':
@@ -52,9 +52,9 @@ dependencies:
         uses:
             - 'actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd'
             - 'actions/setup-go@7a3fe6cf4cb3a834922a1244abfce67bcef6a0c5'
-    'reviewdog/action-actionlint@v1.81.1':
-        ref: 'v1.81.1'
-        commit: 'sha1-619a81ec64ff8c0211cd6146eb2b21e8f1d7f440'
+    'reviewdog/action-actionlint@v1.84.0':
+        ref: 'v1.84.0'
+        commit: 'sha1-78b296370c5c75abca79860e9baa9846e3286a29'
         owner_id: 48765237
         repo_id: 385059686
     'reviewdog/action-misspell@v1.30.4':
